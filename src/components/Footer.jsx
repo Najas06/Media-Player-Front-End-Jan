@@ -6,7 +6,7 @@ import { faInstagram,faFacebook,faLinkedin,faXTwitter } from '@fortawesome/free-
 
 function Footer() {
   return (
-    <div className='row p-4 d-flex justify-content-between align-items-start'>
+    <div className='row p-5 d-flex justify-content-between align-items-start md-5'>
       <div className="col-md-4">
         <h5 className='mb-3'>Media Player  <FontAwesomeIcon className='text-warning ms-3' size='2xl' icon={faVideo} /></h5>
         <p style={{textAlign:"justify"}}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Harum expedita atque voluptates quam placeat quis aliquid alias pariatur, mollitia laboriosam voluptatibus commodi, perferendis est. Labore ipsa nesciunt eos unde quisquam.</p>

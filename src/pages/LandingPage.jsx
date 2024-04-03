@@ -2,6 +2,7 @@ import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
@@ -11,7 +12,7 @@ const LandingPage = () => {
       <div className="col-md-5 m-3">
         <h3>Welcome to <span className='text-warning'>Media Player</span></h3>
         <p style={{textAlign:"justify"}} className='mt-3'> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores, dignissimos amet accusamus quibusdam veritatis ipsum fuga esse itaque, inventore non dolorum. Sed reprehenderit nostrum corrupti harum nulla qui repudiandae dicta!</p>
-        <button className='btn btn-warning mt-4'>Get Started</button>
+        <Link to={'/home'}><button className='btn btn-warning mt-4'>Get Started</button></Link>
       </div>
       {/* <div className="col-md-1"></div> */}
       <div className="col-md-5 d-flex justify-content-center align-items-center">
@@ -20,7 +21,7 @@ const LandingPage = () => {
     </div>
     <br />
     <h2 className='text-center mb-5'>Features</h2>
-    <Row className='d-flex justify-content-between px-5'>
+    <Row className='d-flex justify-content-between p-5'>
       {/* <Col md={1}></Col> */}
       <Col md={3}>
       <Card style={{ width: '100%' }} className='p-2'>
@@ -65,13 +66,20 @@ const LandingPage = () => {
 
     </Row>
 
-    <div className='my-5 row'>
+    <div className='my-5 row py-5 pt-0 pt-md-5' >
     <div className="col-md-1"></div>
-    <div className="col-md-10 border p-4 rounded-2 border-2">
-      <Row>
-        <Col md={6}></Col>
-        <Col md={6}><iframe width="100%" height="480" src="https://www.youtube.com/embed/h2TCOz2N-os" title="Najeeb &amp; Prithviraj: Real and Reel Journey | The GoatLife | Aadujeevitham |" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></Col>
+    <div className="col-md-10 border p-  rounded-2 border-2">
+      <div className='py-5'>
+      <Row >
+        <Col md={6} className='p-3'>
+          <h2 className='text-warning mb-5'>Simple Fast and Powerful</h2>
+          <p style={{textAlign:"justify"}}><span className='fs-4 mt-3'>Play Everthing</span>: Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia porro, modi at necessitatibus totam reiciendis voluptatum voluptatibus incidunt eos vitae. Officiis reprehenderit atque cumque reiciendis minima debitis dolore at ex!</p>
+          <p style={{textAlign:"justify"}}><span className='fs-4 mt-3'>Play Everthing</span>: Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia porro, modi at necessitatibus totam reiciendis voluptatum voluptatibus incidunt eos vitae. Officiis reprehenderit atque cumque reiciendis minima debitis dolore at ex!</p>
+          <p style={{textAlign:"justify"}}><span className='fs-4 mt-3'>Play Everthing</span>: Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia porro, modi at necessitatibus totam reiciendis voluptatum voluptatibus incidunt eos vitae. Officiis reprehenderit atque cumque reiciendis minima debitis dolore at ex!</p>
+        </Col>
+        <Col md={6} className='p-3'><iframe width="100%" height="100%" src="https://www.youtube.com/embed/h2TCOz2N-os" title="Najeeb &amp; Prithviraj: Real and Reel Journey | The GoatLife | Aadujeevitham |" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></Col>
       </Row>
+      </div>
     </div>
     <div className="col-md-1"></div>
     </div>
