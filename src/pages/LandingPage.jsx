@@ -69,7 +69,7 @@ const LandingPage = () => {
     <div className='my-5 row py-5 pt-0 pt-md-5' >
     <div className="col-md-1"></div>
     <div className="col-md-10 border p-  rounded-2 border-2">
-      <div className='py-5'>
+      <div className='py-5'style={{ overflow: "auto" }}>
       <Row >
         <Col md={6} className='p-3'>
           <h2 className='text-warning mb-5'>Simple Fast and Powerful</h2>
