@@ -4,7 +4,9 @@ import React from 'react'
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { uploadVideoApi } from '../services/allAPI';
 
 function Add() {
     // state to store video details 
@@ -13,8 +15,33 @@ function Add() {
         imagrUrl:"",
         embedLink:""
     })
-    // console.log(video);
+    console.log(video);
 
+    const getEmededLink = (e) =>{
+        const text = e.target.value
+        if(text.startsWith('https://youtu.be/')){
+            console.log(text.slice(17,28));
+            const link = `https://www.youtube.com/embed/${text.slice(17,28)}`
+            setVideo({...video,embedLink:link})
+        }
+        else{
+            console.log(text.slice(-11));
+            const link = `https://www.youtube.com/embed/${text.slice(-11)}`
+            setVideo({...video,embedLink:link})
+        }
+    }
+
+    // function to upload the video details 
+    const handleUpload = async() =>{
+        const {caption, imagrUrl, embedLink} = video;
+        if(!caption || !imagrUrl || !embedLink){
+            toast.warning('Please fill the form properly')
+        }
+        else{
+            // toast.success('Processing')
+           const res = await uploadVideoApi(video)
+        }
+    }
     
     const [show, setShow] = useState(false);
 
@@ -40,7 +67,7 @@ function Add() {
                         <input type="text" placeholder='Enter Thumbnail URL' className='form-control' onChange={(e)=>setVideo({...video,imagrUrl:e.target.value})} />
                     </div>
                     <div className='mb-3'>
-                        <input type="text" placeholder='Enter Youtube video link' className='form-control' onChange={(e)=>setVideo({...video,imagrUrl:e.target.value})} />
+                        <input type="text" placeholder='Enter Youtube video link' className='form-control' onChange={(e)=>getEmededLink(e)} />
                     </div>
                 </form>
                 </Modal.Body>
@@ -48,13 +75,20 @@ function Add() {
                     <Button variant="secondary" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="warning" onClick={handleClose}>
+                    <Button variant="warning" onClick={handleUpload}>
                         Upload
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <ToastContainer theme='dark' position='top-center' autoClose={3000}/>
         </>
     )
 }
 
 export default Add
+
+// https://youtu.be/h2TCOz2N-os
+
+// https://www.youtube.com/watch?v=h2TCOz2N-os
+
+// https://youtu.be/h2TCOz2N-os?si=wjtscBLAIYNUFLgu
