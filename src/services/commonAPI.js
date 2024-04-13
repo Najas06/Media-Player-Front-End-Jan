@@ -14,3 +14,5 @@ const commmonAPI = async(httpmethod,url,reqBody)=>{
         return err
     })
 }
+
+export default commmonAPI;

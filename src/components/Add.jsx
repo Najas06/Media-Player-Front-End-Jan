@@ -8,41 +8,55 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { uploadVideoApi } from '../services/allAPI';
 
-function Add() {
+function Add({setVideoUploadStatus}) {
     // state to store video details 
     const [video, setVideo] = useState({
-        caption:"",
-        imagrUrl:"",
-        embedLink:""
+        caption: "",
+        imagrUrl: "",
+        embedLink: ""
     })
     console.log(video);
 
-    const getEmededLink = (e) =>{
+    const getEmededLink = (e) => {
         const text = e.target.value
-        if(text.startsWith('https://youtu.be/')){
-            console.log(text.slice(17,28));
-            const link = `https://www.youtube.com/embed/${text.slice(17,28)}`
-            setVideo({...video,embedLink:link})
+        if (text.startsWith('https://youtu.be/')) {
+            console.log(text.slice(17, 28));
+            const link = `https://www.youtube.com/embed/${text.slice(17, 28)}`
+            setVideo({ ...video, embedLink: link })
         }
-        else{
+        else {
             console.log(text.slice(-11));
             const link = `https://www.youtube.com/embed/${text.slice(-11)}`
-            setVideo({...video,embedLink:link})
+            setVideo({ ...video, embedLink: link })
         }
     }
 
     // function to upload the video details 
-    const handleUpload = async() =>{
-        const {caption, imagrUrl, embedLink} = video;
-        if(!caption || !imagrUrl || !embedLink){
+    const handleUpload = async () => {
+        const { caption, imagrUrl, embedLink } = video;
+        if (!caption || !imagrUrl || !embedLink) {
             toast.warning('Please fill the form properly')
         }
-        else{
+        else {
             // toast.success('Processing')
-           const res = await uploadVideoApi(video)
+            const res = await uploadVideoApi(video)
+            if (res.status >= 200 && res.status < 300) {
+                toast.success('Upload Successfully')
+                setVideoUploadStatus(res.data)
+                setVideo({
+                    caption: "",
+                    imagrUrl: "",
+                    embedLink: ""
+                })
+                handleClose();
+            }
+            else {
+                console.log(res);
+                toast.error('Something Went wrong')
+            }
         }
     }
-    
+
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -58,18 +72,18 @@ function Add() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <p>Please fill following details</p>
-                <form className='mt-3 border p-3 rounded'>
-                    <div className='mb-3'>
-                        <input type="text" placeholder='Enter video caption' className='form-control' onChange={(e)=>setVideo({...video,caption:e.target.value})} />
-                    </div>
-                    <div className='mb-3'>
-                        <input type="text" placeholder='Enter Thumbnail URL' className='form-control' onChange={(e)=>setVideo({...video,imagrUrl:e.target.value})} />
-                    </div>
-                    <div className='mb-3'>
-                        <input type="text" placeholder='Enter Youtube video link' className='form-control' onChange={(e)=>getEmededLink(e)} />
-                    </div>
-                </form>
+                    <p>Please fill following details</p>
+                    <form className='mt-3 border p-3 rounded'>
+                        <div className='mb-3'>
+                            <input type="text" placeholder='Enter video caption' className='form-control' onChange={(e) => setVideo({ ...video, caption: e.target.value })} />
+                        </div>
+                        <div className='mb-3'>
+                            <input type="text" placeholder='Enter Thumbnail URL' className='form-control' onChange={(e) => setVideo({ ...video, imagrUrl: e.target.value })} />
+                        </div>
+                        <div className='mb-3'>
+                            <input type="text" placeholder='Enter Youtube video link' className='form-control' onChange={(e) => getEmededLink(e)} />
+                        </div>
+                    </form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -80,7 +94,7 @@ function Add() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <ToastContainer theme='dark' position='top-center' autoClose={3000}/>
+            <ToastContainer theme='dark' position='top-center' autoClose={3000} />
         </>
     )
 }
