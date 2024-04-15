@@ -3,9 +3,12 @@ import { Col, Row } from 'react-bootstrap'
 import VideoCard from './VideoCard'
 import { getUploadVideoApi } from '../services/allAPI'
 
-function View() {
+function View({videoUploadStatus}) {
   // state to hold the videos from backend 
   const [video, setVideo] = useState([])
+
+  // state lifting 
+  const [deleteVideoStatus,setDeleteVideoStatus] = useState(false)
 
   // js code 
   const getVideo = async()=>{
@@ -17,14 +20,15 @@ function View() {
 
   useEffect(()=>{
     getVideo()
-  },[])
+    setDeleteVideoStatus(false)
+  },[videoUploadStatus,deleteVideoStatus])
   return (
     <>
     <Row>
         { video?.length>0?
           video?.map((item)=>(
           <Col sm={12} md={6} lg={4} xl={3}>
-            <VideoCard displayVideo={item}/>
+            <VideoCard displayVideo={item} setDeleteVideoStatus={setDeleteVideoStatus}/>
         </Col>
           ))
         :

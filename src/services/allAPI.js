@@ -11,3 +11,8 @@ export const uploadVideoApi = async(reqBody)=>{
 export const getUploadVideoApi = async()=>{
     return await commmonAPI('GET',`${serverURL}/videos`,'')
 }
+
+// api to delete a video 
+export const deleteVideoApi = async(id)=>{
+    return await commmonAPI('DELETE',`${serverURL}/videos/${id}`,{})
+}
