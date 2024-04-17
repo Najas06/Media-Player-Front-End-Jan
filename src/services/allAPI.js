@@ -16,3 +16,13 @@ export const getUploadVideoApi = async()=>{
 export const deleteVideoApi = async(id)=>{
     return await commmonAPI('DELETE',`${serverURL}/videos/${id}`,{})
 }
+
+// api to add history 
+export const addToHistory = async(reqBody)=> {
+   return  await commmonAPI('POST',`${serverURL}/history`,reqBody)
+}
+
+// api to get all videos from history
+export const getAllVideoHistoryApi = async()=>{
+    return await  commmonAPI('GET',`${serverURL}/history`,'')
+}

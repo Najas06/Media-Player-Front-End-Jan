@@ -1,9 +1,23 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getAllVideoHistoryApi } from '../services/allAPI'
 
 const WatchHistory = () => {
+  const [videoHistory,setVideoHistory] = useState([])
+
+
+  // function to get all Video from backend 
+  const getAllVideo = async()=>{
+    const response = await getAllVideoHistoryApi()
+    setVideoHistory(response.data)
+  }
+  console.log(videoHistory);
+
+  useEffect(()=>{
+    getAllVideo()
+  },[])
   return (
     <>
       <div className='d-flex align-items-center mx-5 mb-5 mt-5 justify-content-between'>
