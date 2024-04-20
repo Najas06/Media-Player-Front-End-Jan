@@ -26,3 +26,8 @@ export const addToHistory = async(reqBody)=> {
 export const getAllVideoHistoryApi = async()=>{
     return await  commmonAPI('GET',`${serverURL}/history`,'')
 }
+
+// api to delete video from history
+export const deleteVideoHistoryApi = async(id)=>{
+    return await commmonAPI('DELETE',`${serverURL}/history/${id}`,{})
+}
