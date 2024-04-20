@@ -1,10 +1,12 @@
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllVideoHistoryApi } from '../services/allAPI'
 
 const WatchHistory = () => {
+  
+  // to store histort details for apend 
   const [videoHistory,setVideoHistory] = useState([])
 
 
@@ -28,7 +30,8 @@ const WatchHistory = () => {
       <div className="row mx-4">
         <div className="col-md-1"></div>
         <div className="col-md-10 p-4" style={{ overflow: "auto" }}>
-          <table className='table'>
+          {videoHistory?.
+            <table className='table'>
             <thead>
               <tr>
                 <th>#</th>
@@ -38,14 +41,14 @@ const WatchHistory = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody className='text-start'>
-              <td>sfswf</td>
+            <tbody className='text-start '>
+              <td>{}</td>
               <td>sfsdf</td>
               <td>sfsdf</td>
               <td>sdfsf</td>
-              <td>sfsf</td>
+              <td><FontAwesomeIcon icon={faTrash} className='btn btn-outline-danger' /></td>
             </tbody>
-          </table>
+          </table>}
         </div>
         <div className="col-md-1"></div>
       </div>
