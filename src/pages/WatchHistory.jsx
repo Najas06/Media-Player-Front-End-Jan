@@ -8,7 +8,8 @@ const WatchHistory = () => {
 
   // to store histort details for apend 
   const [videoHistory, setVideoHistory] = useState([])
-
+  // to update after delete
+  const [deleteStatus,setDeleteStatus] = useState(false)
 
   // function to get all Video from backend 
   const getAllVideo = async () => {
@@ -18,11 +19,18 @@ const WatchHistory = () => {
   console.log(videoHistory);
 
 
+  // function to delete a particular delete 
+  const handleDelete = async (id)=>{
+    const response = await deleteVideoHistoryApi(id)
+    console.log(response);
+    setDeleteStatus(true)
+  }
   
 
   useEffect(() => {
     getAllVideo()
-  }, [])
+    setDeleteStatus(false)
+  }, [deleteStatus])
   return (
     <>
       <div className='d-flex align-items-center mx-5 mb-5 mt-5 justify-content-between'>
@@ -51,7 +59,7 @@ const WatchHistory = () => {
                   <td>{item?.caption}</td>
                   <td><a href={item?.url} target='_blank'>{item?.url}</a></td>
                   <td>{item?.timeStamp}</td>
-                  <td><FontAwesomeIcon icon={faTrash} className='btn btn-outline-danger' onClick={handleDelete(item?.id)}/></td>
+                  <td><FontAwesomeIcon icon={faTrash} className='btn btn-outline-danger' onClick={()=>handleDelete(item?.id)}/></td>
                 </tr>
                 ))
                   }
