@@ -6,7 +6,7 @@ import { Col, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import VideoCard from './VideoCard';
-import { addCategoryApi, deleteCategoryApi, getCategoryApi } from '../services/allAPI';
+import { addCategoryApi, deleteCategoryApi, getAVideo, getCategoryApi, updateCategoryApi } from '../services/allAPI';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,9 +18,9 @@ function Category() {
   const [allCategory, setAllCategory] = useState([])
   // console.log(categoryName);
 
-  const [allCategoryStatus,setAllCategoryStatus] = useState(false);
+  const [allCategoryStatus, setAllCategoryStatus] = useState(false);
 
-  const [deleteCategoryStatus,setDeleteCategoryStatus] = useState(false)
+  const [deleteCategoryStatus, setDeleteCategoryStatus] = useState(false)
 
   // function to add category  
   const handleAddCategory = async () => {
@@ -28,41 +28,41 @@ function Category() {
       category: categoryName,
       allVideos: []
     }
-    if(allCategory?.length == 0){
+    if (allCategory?.length == 0) {
       const result = await addCategoryApi(reqBody)
-    console.log(result);
-    if (result.status >= 200 && result.status < 300) {
-      toast.success('Successfully Created')
-      setCategoryName('')
-      setAllCategoryStatus(true)
-      handleClose()
+      console.log(result);
+      if (result.status >= 200 && result.status < 300) {
+        toast.success('Successfully Created')
+        setCategoryName('')
+        setAllCategoryStatus(true)
+        handleClose()
+      }
+      else {
+        toast.error('Something went wrong')
+      }
     }
     else {
-      toast.error('Something went wrong')
+      const exisitingCategory = allCategory?.find(item => item.category == categoryName)
+      if (exisitingCategory) {
+        toast.warning('Category Already Exist')
+        setCategoryName('')
+        handleClose()
+      }
+      else {
+        const result = await addCategoryApi(reqBody)
+        console.log(result);
+        if (result.status >= 200 && result.status < 300) {
+          toast.success('Successfully Created')
+          setCategoryName('')
+          setAllCategoryStatus(true)
+          handleClose()
+        }
+        else {
+          toast.error('Something went wrong')
+        }
+      }
     }
   }
-  else{
-    const exisitingCategory = allCategory?.find(item=>item.category==categoryName)
-    if(exisitingCategory){
-      toast.warning('Category Already Exist')
-      setCategoryName('')
-      handleClose()
-    }
-    else{
-      const result = await addCategoryApi(reqBody)
-    console.log(result);
-    if (result.status >= 200 && result.status < 300) {
-      toast.success('Successfully Created')
-      setCategoryName('')
-      setAllCategoryStatus(true)
-      handleClose()
-    }
-    else {
-      toast.error('Something went wrong')
-    }
-    }
-  }
-    }
 
   // functiom to get all category 
   const getAllCategory = async () => {
@@ -73,14 +73,14 @@ function Category() {
 
 
   // function to delete category
-  const handleDelete = async(id)=>{
+  const handleDelete = async (id) => {
     const result = await deleteCategoryApi(id)
     console.log(result);
-    if(result.status>=200 && result.status<300){
+    if (result.status >= 200 && result.status < 300) {
       toast.error('Deleted Successfully')
       setDeleteCategoryStatus(true)
     }
-    else{
+    else {
       toast.warning('Something went wrong')
     }
   }
@@ -88,8 +88,35 @@ function Category() {
     getAllCategory()
     setAllCategoryStatus(false)
     setDeleteCategoryStatus(false)
-  }, [allCategoryStatus,deleteCategoryStatus])
+  }, [allCategoryStatus, deleteCategoryStatus])
 
+
+  // function to delete category 
+  const dragOver = (e) => {
+    e.preventDefault() // avoid refresh
+  }
+
+  // function to drop 
+  const videoDrop = async(e, categoryId) => {
+    console.log("inside Droped Function");
+    console.log(`The card droped id ${categoryId}`);
+    const videoId = e.dataTransfer.getData('VideoId')
+    // console.log(videoId);
+
+    // api to get the details of video that is dragged
+    const {data} = await getAVideo(videoId)
+    console.log(data);
+
+    const selectedCategory = allCategory.find(item=>item.id==categoryId)
+
+    if(selectedCategory.allVideos.find(item=>item.id==data.id)){
+      toast.error('Already Video exist')
+    }
+    else{
+      selectedCategory.allVideos.push(data)
+    }
+    await updateCategoryApi(categoryId,selectedCategory)
+  }
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -120,15 +147,21 @@ function Category() {
 
       {allCategory?.length > 0 ?
         allCategory?.map((category) => (
-          <div className="border border-secondary w-100 p-3 rounded mt-5">
+          <div className="border border-secondary w-100 p-3 rounded mt-5" droppable='true' onDragOver={(e) => dragOver(e)} onDrop={(e) => videoDrop(e, category?.id)}>
             <div className="d-flex justify-content-between align-items-center ">
               <p>{category?.category}</p>
-              <button className='btn btn-danger' onClick={()=>handleDelete(category?.id)}><FontAwesomeIcon icon={faTrash} /></button>
+              <button className='btn btn-danger' onClick={() => handleDelete(category?.id)}><FontAwesomeIcon icon={faTrash} /></button>
             </div>
             <Row>
-              <Col sm={12}>
-                {/* <VideoCard /> */}
-              </Col>
+              {category.allVideos.length>0?
+                <Col sm={12}>
+                {category.allVideos.map((item)=>(
+
+                  <VideoCard displayVideo={item} />
+                ))
+                }
+              </Col>:null
+              }
             </Row>
           </div >
         ))
