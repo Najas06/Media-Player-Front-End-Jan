@@ -10,7 +10,7 @@ import { addCategoryApi, deleteCategoryApi, getAVideo, getCategoryApi, updateCat
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Category() {
+function Category({dragOutVideoStatus, setDragOutVideoStatus}) {
   const [show, setShow] = useState(false);
 
   const [categoryName, setCategoryName] = useState('')
@@ -88,7 +88,8 @@ function Category() {
     getAllCategory()
     setAllCategoryStatus(false)
     setDeleteCategoryStatus(false)
-  }, [allCategoryStatus, deleteCategoryStatus])
+    setDragOutVideoStatus(false)
+  }, [allCategoryStatus, deleteCategoryStatus,dragOutVideoStatus])
 
 
   // function to delete category 
@@ -116,6 +117,18 @@ function Category() {
       selectedCategory.allVideos.push(data)
     }
     await updateCategoryApi(categoryId,selectedCategory)
+    getAllCategory()
+  }
+
+  // function to send the details of card of View 
+  const dragStart = (e,categoryId,videoId)=>{
+    console.log(categoryId);
+    console.log(videoId);
+    let sharedData = {
+      categoryId,
+      videoId
+    }
+    e.dataTransfer.setData('sharedData',JSON.stringify(sharedData))
   }
 
   const handleClose = () => setShow(false);
@@ -154,13 +167,12 @@ function Category() {
             </div>
             <Row>
               {category.allVideos.length>0?
-                <Col sm={12}>
-                {category.allVideos.map((item)=>(
-
-                  <VideoCard displayVideo={item} />
+                category.allVideos.map((item)=>(
+                  <Col sm={12} draggable onDragStart={(e)=>dragStart(e,category.id,item.id)}>
+                  <VideoCard displayVideo={item} isPresent = {true} />
+                  </Col>
                 ))
-                }
-              </Col>:null
+              :null
               }
             </Row>
           </div >

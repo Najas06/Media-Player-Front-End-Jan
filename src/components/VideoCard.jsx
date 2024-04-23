@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { addToHistory, deleteVideoApi } from '../services/allAPI';
 
-function VideoCard({ displayVideo, setDeleteVideoStatus }) {
+function VideoCard({ displayVideo, setDeleteVideoStatus , isPresent }) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -47,11 +47,13 @@ function VideoCard({ displayVideo, setDeleteVideoStatus }) {
 
   return (
     <>
-      <Card style={{ width: '100%' }} draggable onDragStart={(e)=>videoDrag(e,displayVideo?.id)} className='mt-2'>
-        <Card.Img onClick={handleShow} variant="top" src={displayVideo?.imagrUrl} width={"300px"} height={'300px'}  style={{ textAlign: "justify"}} />
+      <Card onClick={handleShow}  style={{ width: '100%' }} draggable onDragStart={(e)=>videoDrag(e,displayVideo?.id)} className='mt-2'>
+        {!isPresent &&
+          <Card.Img variant="top" src={displayVideo?.imagrUrl} width={"300px"} height={'300px'}  style={{ textAlign: "justify"}} />}
         <Card.Body className='d-flex justify-content-between  align-items-center'>
           <Card.Text>{displayVideo?.caption}</Card.Text>
-          <Button variant="danger" onClick={() => handleDelete(displayVideo?.id)}><FontAwesomeIcon icon={faTrash} /></Button>
+          {!isPresent&&
+            <Button variant="danger" onClick={() => handleDelete(displayVideo?.id)}><FontAwesomeIcon icon={faTrash} /></Button>}
         </Card.Body>
       </Card>
 

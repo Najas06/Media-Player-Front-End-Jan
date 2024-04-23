@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom'
 const Home = () => {
    const [videoUploadStatus, setVideoUploadStatus] = useState({})
 
+   const [dragOutVideoStatus, setDragOutVideoStatus] = useState(false)
+
   return (
     <>
       <div className='my-5 container d-flex '>
@@ -21,10 +23,10 @@ const Home = () => {
       <div className="row mt-5 p-4 d-flex justify-content-evenly">
         <div className="col-md-9">
           <h3>All Videos</h3>
-          <View videoUploadStatus={videoUploadStatus}/>
+          <View videoUploadStatus={videoUploadStatus} setDragOutVideoStatus={setDragOutVideoStatus}/>
         </div>
         <div className="col-md-2">
-          <Category/>
+          <Category dragOutVideoStatus = {dragOutVideoStatus} setDragOutVideoStatus={setDragOutVideoStatus}/>
         </div>
       </div>
     </>
